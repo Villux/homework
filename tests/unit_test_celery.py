@@ -8,10 +8,6 @@ from unittest import TestCase
 from celery import chain
 from celery_queue import tasks
 
-# Ref of celery mock unit test
-# - https://www.distributedpython.com/2018/05/15/testing-celery-chains/
-# - https://www.distributedpython.com/2018/05/01/unit-testing-celery-tasks/
-# - http://docs.celeryproject.org/en/latest/userguide/testing.html
 
 class TestAddTask(unittest.TestCase):
 
