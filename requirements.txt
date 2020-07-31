@@ -3,3 +3,5 @@ pytest
 sqlalchemy
 albumentations
 opencv2-python
+torch
+torchvision
