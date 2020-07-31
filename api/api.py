@@ -37,6 +37,9 @@ class StyleImage(Base):
     usage = Column(String(255))
     productDisplayName = Column(String(255))
 
+def create(engine):
+    Base.metadata.create_all(bind=engine)
+
 
 def open_session(dbURL):
     engine = create_engine(dbURL)

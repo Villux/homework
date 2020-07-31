@@ -1,8 +1,10 @@
+psycopg2
 celery
 pytest
 sqlalchemy
+sqlalchemy_utils
 albumentations
-opencv2-python
+opencv-python
 torch
 torchvision
 matplotlib

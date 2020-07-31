@@ -8,9 +8,9 @@ from sqlalchemy import Column, Integer, Float, Date, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from api.api import StyleImage
+from api.api import StyleImage, create
+from sqlalchemy_utils import database_exists, create_database
 
-Base = declarative_base()
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -22,7 +22,11 @@ if __name__ == "__main__":
 
     #Create the database
     engine = create_engine(f'postgresql://postgres:postgres@localhost:5433/homework')
-    Base.metadata.create_all(engine)
+
+    if not database_exists(engine.url):
+        create_database(engine.url)
+
+    create(engine)
 
     #Create the session
     session = sessionmaker()
