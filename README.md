@@ -33,3 +33,5 @@ How to run:
 > ingest_data <path_to_fashion_product_dataset>
 > jupyter notebook experiment.ipynb
 ```
+Note: installing 'psycopg2' may require additional effort in Ubuntu. This may help:
+https://stackoverflow.com/questions/11583714/install-psycopg2-on-ubuntu
