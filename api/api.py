@@ -82,9 +82,9 @@ def process_query(query, folder):
         s.close()
 
 
-def augment_image(file):
+def augment_image(file, size=256):
     im = cv2.imread(file)
-    aug = A.RandomResizedCrop(256, 256, scale=(0.8, 0.8))
+    aug = A.RandomResizedCrop(size, size, scale=(0.8, 0.8))
     augmented = aug(image=im)
     filename, file_extension = os.path.splitext(file) 
     cv2.imwrite(filename+'_au'+file_extension, augmented['image'])
@@ -97,14 +97,15 @@ def list_folder(folder):
     augmented_images = glob.glob(os.path.join(target_folder, '*_au.jpg'))
     styles = glob.glob(os.path.join(target_folder, '*.json'))
     images.sort()
+    augmented_images.sort()
     styles.sort()
     return {'images':images, 'augmented_images':augmented_images, 'styles':styles}
 
 
-def transform_folder(folder):
+def transform_folder(folder, size=256):
     original_images = list_folder(folder)
     for image_file in original_images['images']:
-        augment_image(image_file)
+        augment_image(image_file, size)
 
 
 if __name__ == "__main__":
