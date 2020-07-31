@@ -5,7 +5,9 @@ Requires https://www.kaggle.com/paramaggarwal/fashion-product-images-small
 Project structure:
 ```
 .
++-- .vsode - utility VSCode stuff
 +-- api
+|   +-- __init__.py
 |   +-- api.py - simple API for image query based on SQLAlchemy
 +-- celery_queue - Docker container for Celery support
 |   +-- .dockerignore
