@@ -5,3 +5,5 @@ albumentations
 opencv2-python
 torch
 torchvision
+matplotlib
+
