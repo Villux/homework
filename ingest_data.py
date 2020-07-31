@@ -1,34 +1,23 @@
 #!/usr/bin/env python3
 
+import sys
+import os
 from time import time
 from datetime import datetime
 from sqlalchemy import Column, Integer, Float, Date, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
+from api.api import StyleImage
 
 Base = declarative_base()
 
-
-class StyleImage(Base):
-    __tablename__ = 'style_image'
-    id = Column(Integer, primary_key=True, nullable=False) 
-    file_id = Column(Integer)
-    file_name = Column(String(255))
-    url = Column(String(1000))
-    gender = Column(String(255))
-    masterCategory = Column(String(255))
-    subCategory = Column(String(255))
-    articleType = Column(String(255))
-    baseColour = Column(String(255))
-    season = Column(String(255))
-    year = Column(Integer)
-    usage = Column(String(255))
-    productDisplayName = Column(String(255))
-
-
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        root_dataset_path = sys.argv[1]
+    else:
+        root_dataset_path = 'fashion-dataset'
+
     t = time()
 
     #Create the database
@@ -42,8 +31,8 @@ if __name__ == "__main__":
 
     try:
         # todo: set path as an argument
-        images_file_name = "fashion-dataset/images.csv" 
-        styles_file_name = "fashion-dataset/styles.csv" 
+        images_file_name = os.path.join(root_dataset_path, 'images.csv') 
+        styles_file_name = os.path.join(root_dataset_path, 'styles.csv') 
 
         # delete old data first as this is not an incremental update
         num_rows_deleted = s.query(StyleImage).delete()
