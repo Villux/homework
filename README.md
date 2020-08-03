@@ -1,6 +1,7 @@
 # homework
 Homework for making a data pipeline to process images dataset, making queries and run models on those queries.
 Requires https://www.kaggle.com/paramaggarwal/fashion-product-images-small
+To reduce configuration efforts just place _fashion-dataset/_ folder into the projects _data/_ folder 
 
 Project structure:
 ```
@@ -32,7 +33,7 @@ How to run:
 > docker-compose up
 <create virtualenv with requirements.txt in any preferrable way: Conda/pyenv/virtualenv>
 > pytest tests/unit_test_celery.py
-> ./ingest_data_task.py <path_to_fashion_product_dataset>
+> ./ingest_data_task.py
 > init_model.py
 > pytest tests/unit_test_api.py
 > jupyter notebook experiment.ipynb
