@@ -161,10 +161,10 @@ def clean_folder(folder):
 def ingest(dbURL, root_dataset_path, use_celery_logger=True):
     """ Ingest dataset into specified database """
 
-    if use_celery_logger:
-        logger = get_task_logger(__name__)
-    else:
-        logger = logging.getLogger(__name__)
+    # if use_celery_logger:
+    #     logger = get_task_logger(__name__)
+    # else:
+    #     logger = logging.getLogger(__name__)
 
     t = time()
 
@@ -178,7 +178,8 @@ def ingest(dbURL, root_dataset_path, use_celery_logger=True):
         # delete old data first as this is not an incremental update
         num_rows_deleted = s.query(StyleImage).delete()
         s.commit()
-        logger.info(f'Old rows deleted: {num_rows_deleted}')
+        # logger.info(f'Old rows deleted: {num_rows_deleted}')
+        print(f'Old rows deleted: {num_rows_deleted}')
 
         
         # have to process files manually as styles file contains some lines with more delimiters then expected
@@ -194,7 +195,8 @@ def ingest(dbURL, root_dataset_path, use_celery_logger=True):
                 style_values = style_line.split(',')
                 # check line id match
                 if not image_values[0].startswith(style_values[0]):
-                    logger.info(f"Image file id {image_values[0]} doesn't correspond to style file id {style_values[0]} at line {line_num}")
+                    # logger.info(f"Image file id {image_values[0]} doesn't correspond to style file id {style_values[0]} at line {line_num}")
+                    print(f"Image file id {image_values[0]} doesn't correspond to style file id {style_values[0]} at line {line_num}")
                     continue
                 
                 # if style data has more columns then expected then last column should collect all the data
@@ -220,30 +222,37 @@ def ingest(dbURL, root_dataset_path, use_celery_logger=True):
                 accepted_record_count += 1
 
             
-            logger.info(f'Total collected records {accepted_record_count}')
+            # logger.info(f'Total collected records {accepted_record_count}')
+            print(f'Total collected records {accepted_record_count}')
 
         s.commit() #Attempt to commit all the records
     except Exception as e:
-        logger.exception(e)
+        # logger.exception(e)
+        print(e)
         s.rollback() #Rollback the changes on error
     finally:
         s.close() #Close the connection
 
     time_elapsed = time() - t
-    logger.info(f'Time elapsed: {time_elapsed}')
+    # logger.info(f'Time elapsed: {time_elapsed}')
+    print(f'Time elapsed: {time_elapsed}')
 
     # checking amount of loaded recors
     inserted_rec_count = s.query(StyleImage).count()
-    logger.info(f'Inserted records: {inserted_rec_count}')
+    # logger.info(f'Inserted records: {inserted_rec_count}')
+    print(f'Inserted records: {inserted_rec_count}')
 
     # checking how many year records weren't properly converted
     missing_year_count = s.query(StyleImage).filter(StyleImage.year == -1).count()
-    logger.info(f'Records with missing year: {missing_year_count}')
+    # logger.info(f'Records with missing year: {missing_year_count}')
+    print(f'Records with missing year: {missing_year_count}')
 
     # checking how many id records weren't properly converted
     missing_id_count = s.query(StyleImage).filter(StyleImage.id == -1).count()
-    logger.info(f'Records with missing id: {missing_id_count}')
-    logger.info('Done!')
+    # logger.info(f'Records with missing id: {missing_id_count}')
+    # logger.info('Done!')
+    print(f'Records with missing id: {missing_id_count}')
+    print('Done!')
 
 
 def predict_folder(folder):

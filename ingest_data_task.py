@@ -12,5 +12,9 @@ if __name__ == "__main__":
     else:
         root_dataset_path = 'fashion-dataset'
 
-    task = tasks.ingest.apply_async(args=[api.DB_URL, root_dataset_path])    
+    # task = tasks.ingest.apply_async(args=[api.DB_URL, root_dataset_path])    
     # print(task)
+
+    # sync apply to show progress messages
+    # Unfortunately, I failed to setup proper logging
+    tasks.ingest.apply(args=[api.DB_URL, root_dataset_path])    
