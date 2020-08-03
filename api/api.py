@@ -30,8 +30,8 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 Base = declarative_base()
 
-DATA_FOLDER = '/home/andrei/Desktop/imachines/homework/fashion-dataset'
-OUTPUT_FOLDER = '/home/andrei/Desktop/imachines/homework/out'
+DATA_FOLDER = 'fashion-dataset'
+OUTPUT_FOLDER = 'out'
 DB_URL = 'postgresql://postgres:postgres@localhost:5433/homework'
 
 
