@@ -1,47 +1,47 @@
 import unittest
 import sys
 sys.path.append(".")
-sys.path.append("./celery_queue")
 import pytest
 from unittest.mock import patch
 from unittest import TestCase
-import
+from api import api
+from sqlalchemy.orm import Query
 
 
-@pytest.fixture(scope='session')
-def db_engine(request):
-    """yields a SQLAlchemy engine which is suppressed after the test session"""
-    db_url = request.config.getoption("--dburl")
-    engine_ = create_engine(db_url, echo=True)
+class TestAPI(unittest.TestCase):
+    test_case_folder = 'test_year2011'
 
-    yield engine_
-
-    engine_.dispose()
-
-
-@pytest.fixture(scope='session')
-def db_session_factory(db_engine):
-    """returns a SQLAlchemy scoped session factory"""
-    return scoped_session(sessionmaker(bind=engine))
+    @pytest.mark.run(order=1)
+    def test_query(self):
+        api.process_query(Query(api.StyleImage).filter(api.StyleImage.year == 2011).limit(10), self.test_case_folder)
+        files = api.list_folder(self.test_case_folder)
+        self.assertTrue('images' in files)
+        self.assertTrue('styles' in files)
+        self.assertEqual(len(files['images']), 10)
+        self.assertEqual(len(files['styles']), 10)
 
 
-@pytest.fixture(scope='function')
-def db_session(db_session_factory):
-    """yields a SQLAlchemy connection which is rollbacked after the test"""
-    session_ = session_factory()
+    @pytest.mark.run(order=2)
+    def test_trasnformation(self):
+        api.transform_folder(self.test_case_folder)
+        files = api.list_folder(self.test_case_folder)
+        self.assertTrue('augmented_images' in files)
+        self.assertEqual(len(files['augmented_images']), 10)
 
-    yield session_
 
-    session_.rollback()
-    session_.close()
+    @pytest.mark.run(order=3)
+    def test_prediction(self):
+        result = api.predict_folder(self.test_case_folder)
+        self.assertEqual(len(result), 10)
+        self.assertTrue('boxes' in result[0])
+        self.assertTrue('labels' in result[0])
 
-class TestQuery1(unittest.TestCase):
 
-    def test_task_state_and_addition(self):
-
-        task = tasks.add.apply(args=[3, 5])
-        self.assertEqual(task.status, "SUCCESS")
-        self.assertEqual(task.result, 8)
+    @pytest.mark.run(order=4)
+    def test_cleanup(self):
+        api.clean_folder(self.test_case_folder)
+        files = api.list_folder(self.test_case_folder)
+        self.assertIsNone(files)
 
 
 if __name__ == '__main__':

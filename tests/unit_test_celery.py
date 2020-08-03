@@ -9,7 +9,7 @@ from celery import chain
 from celery_queue import tasks
 
 
-class TestAddTask(unittest.TestCase):
+class TestCelery(unittest.TestCase):
 
     def test_task_state_and_addition(self):
 
@@ -17,7 +17,6 @@ class TestAddTask(unittest.TestCase):
         self.assertEqual(task.status, "SUCCESS")
         self.assertEqual(task.result, 8)
 
-class TestMultiplyTask(unittest.TestCase):
 
     def test_task_state_and_multiply(self):
 

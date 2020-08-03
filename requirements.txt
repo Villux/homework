@@ -1,6 +1,8 @@
 psycopg2
 celery
+redis
 pytest
+pytest-ordering
 sqlalchemy
 sqlalchemy_utils
 albumentations
@@ -9,4 +11,3 @@ torch
 torchvision
 matplotlib
 jupyter
-
