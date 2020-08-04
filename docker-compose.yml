@@ -26,6 +26,7 @@ services:
     container_name: im-postgres
     environment:
         POSTGRES_PASSWORD: postgres
+    # NOTE this would be good to mark to the readme. Had to remove these to make it run
         PGDATA: /opt/pgsql_im/data
     volumes:
         - /datadrive/pgdata:/opt/pgsql/data
